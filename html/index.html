@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitor de QR Code</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript">
+  <style>
+    #qr-reader {
+      width: 300px;
+      margin: auto;
+    }
+    #qr-result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align: center;">Leitor de QR Code</h2>
+  <div id="qr-reader"></div>
+  <div id="qr-result">Resultado: Nenhum código escaneado ainda</div>
+
+  <script>
+    // Função de callback para lidar com o resultado do QR code
+    function onScanSuccess(decodedText, decodedResult) {
+      // Atualiza o conteúdo do elemento de resultado com o QR code lido
+      document.getElementById("qr-result").innerText = `Resultado: ${decodedText}`;
+
+      // Para a leitura após o primeiro código (opcional)
+      html5QrCode.stop().then((ignore) => {
+        // Escaneamento interrompido
+        console.log("Escaneamento parado.");
+      }).catch((err) => {
+        console.error("Erro ao parar o escaneamento:", err);
+      });
+    }
+
+    // Função para inicializar o scanner de QR code
+    function startQrScanner() {
+      const qrReaderElement = document.getElementById("qr-reader");
+
+      // Cria uma instância do leitor de QR code
+      const html5QrCode = new Html5Qrcode("qr-reader");
+
+      // Inicia a leitura da câmera
+      html5QrCode.start(
+        { facingMode: "environment" },  // Usa a câmera traseira (modo "environment")
+        { fps: 10, qrbox: 250 },        // Configurações de leitura
+        onScanSuccess                   // Função de callback para resultados
+      ).catch((err) => {
+        console.error("Erro ao iniciar a leitura:", err);
+      });
+    }
+
+    // Inicia o scanner quando a página é carregada
+    window.addEventListener("load", startQrScanner);
+  </script>
+
+</body>
+</html>
