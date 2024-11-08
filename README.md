@@ -1,5 +1,4 @@
-# Desafio de Layout para Leitor de QR Code - Exame Técnico
-
+# Desafio de Layout para Leitor de QR Code - Dança Digital
 Bem-vindo ao repositório para o exercício técnico de entrevista para desenvolvedor(a). Aqui, vamos avaliar suas habilidades técnicas e criativas na criação de um layout intuitivo e acessível para um leitor de QR code.
 
 ## Objetivo do Desafio
