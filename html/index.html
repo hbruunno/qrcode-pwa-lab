@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leitor de QR Code</title>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript">
   <style>
     #qr-reader {
       width: 300px;
@@ -23,40 +22,42 @@
   <div id="qr-reader"></div>
   <div id="qr-result">Resultado: Nenhum código escaneado ainda</div>
 
+  <!-- Carrega o script da biblioteca -->
+  <script src="js/html5-qrcode.min.js"></script>
+
   <script>
-    // Função de callback para lidar com o resultado do QR code
-    function onScanSuccess(decodedText, decodedResult) {
-      // Atualiza o conteúdo do elemento de resultado com o QR code lido
-      document.getElementById("qr-result").innerText = `Resultado: ${decodedText}`;
+    // Espera até que o HTML esteja completamente carregado
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      // Função de callback para lidar com o resultado do QR code
+      function onScanSuccess(decodedText, decodedResult) {
+        // Atualiza o conteúdo do elemento de resultado com o QR code lido
+        document.getElementById("qr-result").innerText = `Resultado: ${decodedText}`;
+        
+        // Opcional: Para a leitura após o primeiro código escaneado
+        html5QrCode.stop().then((ignore) => {
+          console.log("Escaneamento parado.");
+        }).catch((err) => {
+          console.error("Erro ao parar o escaneamento:", err);
+        });
+      }
 
-      // Para a leitura após o primeiro código (opcional)
-      html5QrCode.stop().then((ignore) => {
-        // Escaneamento interrompido
-        console.log("Escaneamento parado.");
-      }).catch((err) => {
-        console.error("Erro ao parar o escaneamento:", err);
-      });
-    }
+      // Função para inicializar o scanner de QR code
+      function startQrScanner() {
+        const html5QrCode = new Html5Qrcode("qr-reader");
 
-    // Função para inicializar o scanner de QR code
-    function startQrScanner() {
-      const qrReaderElement = document.getElementById("qr-reader");
+        html5QrCode.start(
+          { facingMode: "environment" }, // Usa a câmera traseira
+          { fps: 10, qrbox: 250 },       // Configurações da leitura
+          onScanSuccess                  // Função de callback para resultados
+        ).catch((err) => {
+          console.error("Erro ao iniciar a leitura:", err);
+        });
+      }
 
-      // Cria uma instância do leitor de QR code
-      const html5QrCode = new Html5Qrcode("qr-reader");
-
-      // Inicia a leitura da câmera
-      html5QrCode.start(
-        { facingMode: "environment" },  // Usa a câmera traseira (modo "environment")
-        { fps: 10, qrbox: 250 },        // Configurações de leitura
-        onScanSuccess                   // Função de callback para resultados
-      ).catch((err) => {
-        console.error("Erro ao iniciar a leitura:", err);
-      });
-    }
-
-    // Inicia o scanner quando a página é carregada
-    window.addEventListener("load", startQrScanner);
+      // Inicia o scanner
+      startQrScanner();
+    });
   </script>
 
 </body>
