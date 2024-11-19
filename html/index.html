@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leitor de QR Code</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
     #qr-reader {
       width: 300px;
@@ -17,13 +19,32 @@
   </style>
 </head>
 <body>
+  <div class="container">
+    <h2 style="text-align: center; color: #fff; padding: 2%;">Leitor de QR Code</h2>
+    
+    <div class="leitor">
 
-  <h2 style="text-align: center;">Leitor de QR Code</h2>
-  <div id="qr-reader"></div>
-  <div id="qr-result">Resultado: Nenhum código escaneado ainda</div>
+      <div class="botaoleitor" >
+        <button class="botscanner"  onclick="mostrar('qr-reader')">
+          <i class="fas fa-qrcode"></i> SCANNER</button>
+        <button class="botscanner" onclick="mostrar('digitar')">
+          <i class="fas fa-keyboard"></i>  DIGITAR CÓDIGO</button>      
+      </div>
 
-  <!-- Carrega o script da biblioteca -->
-  <script src="js/html5-qrcode.min.js"></script>
+      <div class="digitar" id="digitar" style="display: none;">
+        <input class="input" type="text" placeholder="Digite o código de barras..">
+      </div>
+
+      <div id="qr-reader" class="camera" style="width: 80%; display: flex;"></div>
+    
+    </div>
+    <!-- Carrega o script da biblioteca -->
+     <script src="js/html5-qrcode.min.js"></script>
+
+     <div id="qr-result">Resultado: Nenhum código escaneado ainda</div>
+
+  </div>
+  
 
   <script>
     // Espera até que o HTML esteja completamente carregado
@@ -58,6 +79,19 @@
       // Inicia o scanner
       startQrScanner();
     });
+
+    function mostrar(opcao) {
+      document.getElementById('qr-reader').style.display = 'none';
+      document.getElementById('digitar').style.display = 'none';
+
+      if (opcao === 'qr-reader') {
+        document.getElementById('qr-reader').style.display = 'block';
+      } else if (opcao === 'digitar') {
+        document.getElementById('digitar').style.display = 'block';
+      }
+      
+    }
+    
   </script>
 
 </body>
